@@ -36,7 +36,7 @@ echo -e "\033[0;34m>>>\033[0m Purging useless files ..."
 cd ..
 cat dummy/live/$domain/fullchain.pem > "$data_path/conf/live/$domain/fullchain.pem"
 cat dummy/live/$domain/privkey.pem > "$data_path/conf/live/$domain/privkey.pem"
-chmod 644 "$data_path/conf/live/$domain/fullchain/pem" "$data_path/conf/live/$domain/privkey/pem"
+chmod 644 "$data_path/conf/live/$domain/fullchain.pem" "$data_path/conf/live/$domain/privkey.pem"
 rm -rf dummy
 
 echo -e "\033[0;34m>>>\033[0m Starting nginx ..."
