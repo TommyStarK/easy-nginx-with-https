@@ -1,7 +1,7 @@
 #!/bin/bash
 
 rsa_key_size=4096
-data_path="./certbot"
+data_path="./certs"
 
 check_last_cmd_return_code() {
   if [ $? -ne 0 ]; then
@@ -16,31 +16,38 @@ if [ -z "$domain" ]; then
     exit 1
 fi
 
-if [ -d "$data_path/conf/live/$domain" ]; then
+if [ -d "$data_path/$domain" ]; then
   read -p "Existing data found for $domain. Continue and replace existing certificate? (y/N) " decision
   if [ "$decision" != "Y" ] && [ "$decision" != "y" ]; then
     exit
   else
-    rm -Rf $data_path/conf/live/$domain
+    rm -Rf $data_path/$domain
     check_last_cmd_return_code "Removing old $domain certificate failed."
   fi
 fi
 
 echo -e "\033[0;34m>>>\033[0m Generating TLS certificate for $domain"
-mkdir -p "$data_path/conf/live/$domain"
+mkdir -p "$data_path/$domain"
 mkdir dummy && cd dummy
 docker run -it --rm -p 443:443 -p 80:80 --name certbot -v `pwd`:/etc/letsencrypt quay.io/letsencrypt/letsencrypt:latest certonly
-check_last_cmd_return_code "certbot certonly failed to generate certificate"
+check_last_cmd_return_code "certbot failed to generate certificate"
 
 echo -e "\033[0;34m>>>\033[0m Purging useless files ..."
 cd ..
-cat dummy/live/$domain/fullchain.pem > "$data_path/conf/live/$domain/fullchain.pem"
-cat dummy/live/$domain/privkey.pem > "$data_path/conf/live/$domain/privkey.pem"
-chmod 644 "$data_path/conf/live/$domain/fullchain.pem" "$data_path/conf/live/$domain/privkey.pem"
+cat dummy/live/$domain/fullchain.pem > "$data_path/$domain/fullchain.pem"
+cat dummy/live/$domain/privkey.pem > "$data_path/$domain/privkey.pem"
+chmod 644 "$data_path/$domain/fullchain.pem" "$data_path/$domain/privkey.pem"
 rm -rf dummy
 
-echo -e "\033[0;34m>>>\033[0m Starting nginx ..."
-docker run --network host --name nginx \
-  -v `pwd`/nginx:/etc/nginx/conf.d \
-  -v `pwd`/certbot/conf:/etc/letsencrypt \
-  --detach --restart always nginx:1.15-alpine
+read -p "Run Nginx container in host network mode? (y/N) " decision
+if [ "$decision" != "Y" ] && [ "$decision" != "y" ]; then
+	exit
+else
+	echo -e "\033[0;34m>>>\033[0m Starting nginx ..."
+	docker run --network host --name nginx \
+		-v `pwd`/certs:/etc/letsencrypt \
+		-v `pwd`/nginx/nginx.conf:/etc/nginx/nginx.conf \
+		-v `pwd`/nginx/conf.d:/etc/nginx/conf.d \
+		-v `pwd`/nginx/ssl:/etc/nginx/ssl \
+		--detach --restart always nginx:1.15-alpine
+fi
