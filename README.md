@@ -3,7 +3,7 @@ Nginx+certbot : easy script to generate TLS certificate for a dns and run nginx 
 
 ## Usage
 
-:warning: Edit the nginx conf files and docker-compose.yaml to fit to your needs, and remove dummy example files and as well as its certificate directory.
+:warning: Edit the nginx conf files and docker-compose.yaml to fit to your needs.
 
 To use this tool, you must have a dns pointing to a server to which you have access.
 Run this script on that server:
