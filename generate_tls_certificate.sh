@@ -29,6 +29,8 @@ fi
 echo -e "\033[0;34m>>>\033[0m Generating TLS certificate for $domain"
 mkdir -p "$data_path/$domain"
 mkdir dummy && cd dummy
+# docker run -it --rm -p 443:443 -p 80:80 --name certbot -v `pwd`:/etc/letsencrypt certbot/certbot:latest certonly --preferred-challenges=http
+# docker run -it --rm -p 443:443 -p 80:80 --name certbot -v `pwd`:/etc/letsencrypt certbot/certbot:latest certonly --preferred-challenges=dns
 docker run -it --rm -p 443:443 -p 80:80 --name certbot -v `pwd`:/etc/letsencrypt quay.io/letsencrypt/letsencrypt:latest certonly
 check_last_cmd_return_code "certbot failed to generate certificate"
 
