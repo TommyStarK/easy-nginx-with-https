@@ -39,6 +39,10 @@ cat dummy/live/$domain/privkey.pem > "$data_path/$domain/privkey.pem"
 chmod 644 "$data_path/$domain/fullchain.pem" "$data_path/$domain/privkey.pem"
 rm -rf dummy
 
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  exit
+fi
+
 read -p "Run Nginx container in host network mode? (y/N) " decision
 if [ "$decision" != "Y" ] && [ "$decision" != "y" ]; then
 	exit
