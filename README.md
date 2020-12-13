@@ -1,6 +1,6 @@
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
-# easy_nginx_with_https
+# easy-nginx-with-https
 Nginx+certbot : easy script to generate TLS certificate for a DNS and run Nginx in a container to reverse proxy a webapp over HTTPS
 
 ## Usage
@@ -18,8 +18,8 @@ Run this script on that server:
 
 ```bash
 ❯ cd /tmp
-❯ git clone https://github.com/TommyStarK/easy_nginx.git
-❯ cd easy_nginx
+❯ git clone https://github.com/TommyStarK/easy-nginx-with-https.git
+❯ cd easy-nginx-with-https
 ❯ mkdir -p certs/dummy.com
 ❯ cd certs/dummy.com
 ❯ openssl genrsa -out privkey.pem 4096
