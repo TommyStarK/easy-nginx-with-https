@@ -1,9 +1,9 @@
-# easy_nginx
-Nginx+certbot : easy script to generate TLS certificate for a dns and run nginx in a container to reverse proxy a webapp over https
+# easy_nginx_with_https
+Nginx+certbot : easy script to generate TLS certificate for a DNS and run Nginx in a container to reverse proxy a webapp over HTTPS
 
 ## Usage
 
-:warning: Edit the nginx conf files and docker-compose.yaml to fit to your needs.
+:warning: Edit the Nginx conf files and docker-compose.yaml to fit to your needs.
 
 To use this tool, you must have a dns pointing to a server to which you have access.
 Run this script on that server:
