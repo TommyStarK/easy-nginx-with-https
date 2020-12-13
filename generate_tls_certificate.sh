@@ -45,13 +45,13 @@ fi
 
 read -p "Run Nginx container in host network mode? (y/N) " decision
 if [ "$decision" != "Y" ] && [ "$decision" != "y" ]; then
-	exit
+  exit
 else
-	echo -e "\033[0;34m>>>\033[0m Starting nginx ..."
-	docker run --network host --name nginx \
-	  -v `pwd`/certs:/etc/letsencrypt \
-	  -v `pwd`/nginx/nginx.conf:/etc/nginx/nginx.conf \
-	  -v `pwd`/nginx/conf.d:/etc/nginx/conf.d \
-	  -v `pwd`/nginx/ssl:/etc/nginx/ssl \
-	  --detach --restart always nginx:1.15-alpine
+  echo -e "\033[0;34m>>>\033[0m Starting nginx ..."
+  docker run --network host --name nginx \
+    -v `pwd`/certs:/etc/letsencrypt \
+    -v `pwd`/nginx/nginx.conf:/etc/nginx/nginx.conf \
+    -v `pwd`/nginx/conf.d:/etc/nginx/conf.d \
+    -v `pwd`/nginx/ssl:/etc/nginx/ssl \
+    --detach --restart always nginx:1.15-alpine
 fi
