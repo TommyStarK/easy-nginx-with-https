@@ -1,3 +1,5 @@
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+
 # easy_nginx_with_https
 Nginx+certbot : easy script to generate TLS certificate for a DNS and run Nginx in a container to reverse proxy a webapp over HTTPS
 
