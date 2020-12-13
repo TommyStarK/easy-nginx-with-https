@@ -29,8 +29,6 @@ fi
 echo -e "\033[0;34m>>>\033[0m Generating TLS certificate for $domain"
 mkdir -p "$data_path/$domain"
 mkdir dummy && cd dummy
-# docker run -it --rm -p 443:443 -p 80:80 --name certbot -v `pwd`:/etc/letsencrypt certbot/certbot:latest certonly --preferred-challenges=http
-# docker run -it --rm -p 443:443 -p 80:80 --name certbot -v `pwd`:/etc/letsencrypt certbot/certbot:latest certonly --preferred-challenges=dns
 docker run -it --rm -p 443:443 -p 80:80 --name certbot -v `pwd`:/etc/letsencrypt quay.io/letsencrypt/letsencrypt:latest certonly
 check_last_cmd_return_code "certbot failed to generate certificate"
 
@@ -51,9 +49,9 @@ if [ "$decision" != "Y" ] && [ "$decision" != "y" ]; then
 else
 	echo -e "\033[0;34m>>>\033[0m Starting nginx ..."
 	docker run --network host --name nginx \
-		-v `pwd`/certs:/etc/letsencrypt \
-		-v `pwd`/nginx/nginx.conf:/etc/nginx/nginx.conf \
-		-v `pwd`/nginx/conf.d:/etc/nginx/conf.d \
-		-v `pwd`/nginx/ssl:/etc/nginx/ssl \
-		--detach --restart always nginx:1.15-alpine
+	  -v `pwd`/certs:/etc/letsencrypt \
+	  -v `pwd`/nginx/nginx.conf:/etc/nginx/nginx.conf \
+	  -v `pwd`/nginx/conf.d:/etc/nginx/conf.d \
+	  -v `pwd`/nginx/ssl:/etc/nginx/ssl \
+	  --detach --restart always nginx:1.15-alpine
 fi
