@@ -28,12 +28,11 @@ fi
 
 echo -e "\033[0;34m>>>\033[0m Generating TLS certificate for $domain"
 mkdir -p "$data_path/$domain"
-mkdir dummy && cd dummy
-docker run -it --rm -p 443:443 -p 80:80 --name certbot -v `pwd`:/etc/letsencrypt quay.io/letsencrypt/letsencrypt:latest certonly
+mkdir -p dummy
+docker run -it --rm -p 443:443 -p 80:80 --name certbot -v `pwd`/dummy:/etc/letsencrypt quay.io/letsencrypt/letsencrypt:latest certonly
 check_last_cmd_return_code "certbot failed to generate certificate"
 
 echo -e "\033[0;34m>>>\033[0m Purging useless files ..."
-cd ..
 cat dummy/live/$domain/fullchain.pem > "$data_path/$domain/fullchain.pem"
 cat dummy/live/$domain/privkey.pem > "$data_path/$domain/privkey.pem"
 chmod 644 "$data_path/$domain/fullchain.pem" "$data_path/$domain/privkey.pem"
